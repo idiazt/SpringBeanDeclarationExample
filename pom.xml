@@ -21,24 +21,53 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 -->
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>com.cursospringavanzado</groupId>
-	<artifactId>spring-avanzado</artifactId>
+	<groupId>com.cursospringavanzado.arch</groupId>
+	<artifactId>spring-business</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-
-	<name>spring-avanzado</name>
-
+	<name>spring-business</name>
+	<description>Spring-Business Layer Project</description>
+	<properties>
+		<mysql.version>5.1.32</mysql.version>
+		<spring.version>4.2.0.RELEASE</spring.version>
+		<hibernate.version>4.3.6.Final</hibernate.version>
+		<junit.version>4.11</junit.version>
+		<jackson.databind.version>2.4.6</jackson.databind.version>
+		<commons.io.version>2.4</commons.io.version>
+		<joda.version>2.8.2</joda.version>
+	</properties>
 	<dependencies>
+		<!-- Jackson -->
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.databind.version}</version>
+		</dependency>
+		<!-- JDBC dependencies -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId> 
+			<version>${mysql.version}</version>
+		</dependency>
+		<!-- Spring dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -47,44 +76,70 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
+			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
+			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
+			<artifactId>spring-jdbc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>${javax.inject.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-context-support</artifactId>
+	        <version>${spring.version}</version>
+	    </dependency>
+	    <!-- Ehcache -->
+	    <dependency>
+	        <groupId>net.sf.ehcache</groupId>
+	        <artifactId>ehcache</artifactId>
+	        <version>2.8.1</version>
+	    </dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.3</version>
+		</dependency>
+		<!-- JPA/Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<version>1.5.2.RELEASE</version>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-test</artifactId>
-			<version>${mockito.spring.boot.version}</version>
-			<scope>test</scope>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -92,48 +147,70 @@
 			<version>${commons.io.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>junit</groupId>
-		    <artifactId>junit</artifactId>
-		    <version>4.12</version>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>javax.annotation</groupId>
-		    <artifactId>jsr250-api</artifactId>
-		    <version>1.0</version>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.core</artifactId>
+			<version>4.0.0.GA</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>servlet-api</artifactId>
+		    <version>2.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-lang</groupId>
+		    <artifactId>commons-lang</artifactId>
+		    <version>2.3</version>
+		</dependency>
 
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${maven-war-plugin.version}</version>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>7.5.0.v20110901</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<stopKey>stop</stopKey>
+					<stopPort>9999</stopPort>
+				</configuration>
+			</plugin>
 		</plugins>
-
 	</build>
-
-	<properties>
-		<mockito.version>1.10.19</mockito.version>
-		<mockito.spring.boot.version>1.4.4.RELEASE</mockito.spring.boot.version>
-		<spring.version>4.3.4.RELEASE</spring.version>
-		<javax.inject.version>1</javax.inject.version>
-		<guava.version>20.0</guava.version>
-		<maven-war-plugin.version>2.6</maven-war-plugin.version>
-		<lombok.version>1.16.12</lombok.version>
-		<commons.io.version>2.5</commons.io.version>
-	</properties>
-
-	<repositories>
-		<repository>
-			<id>java.net</id>
-			<url>https://maven.java.net/content/repositories/releases/</url>
-		</repository>
-	</repositories>
-
 </project>
